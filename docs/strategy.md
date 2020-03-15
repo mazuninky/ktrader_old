@@ -4,26 +4,34 @@
 
 Драфт DSL:
 ```kotlin
-strategy(name = "Short bot", frequency = minute(1)) {
+val shortBot = strategy(name = "Short bot", frequency = minute(1)) {
     time(hour(9) to hour(18))
-    history(day 12)
+    history(day(12))
     onUpdate { update ->
         if(update.price < 5)
             // покупка по рыночной цене
-            context.buy(1)
+            buy(1)
         else
-            contex.sell(all)
+            sell(all)
     }
+}
+
+suspend fun main() {
+    tradingBot(Tinkoff, Influx) {
+        include(shortBot)
+    }.start()
 }
 ```
 
+
+
 ## Требования к DSL
 
-- Typesafe
 - Возможность описывать частоту бота
 - Возможность описать время работы бота
 - Возможность указать стоп условия для бота(к примеру, бот начал в убыток работать)
 - Возможность стратегии иметь состояние
+- Возможность описывать индикаторы
 - Возможность для стратегии записывать данные для длительного хранения
 - Возможность описать логику, которая срабатывает в частоту бота
 - Возможность описывать через dsl условия для обработки различных событий(к примеру, вызови функцию x, если цена будет больше 10)
