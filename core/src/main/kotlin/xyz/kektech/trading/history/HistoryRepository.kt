@@ -1,10 +1,9 @@
 package xyz.kektech.trading.history
 
+import xyz.kektech.trading.entity.CandleEntity
 import java.time.ZonedDateTime
-import kotlin.time.DurationUnit
-import kotlin.time.ExperimentalTime
+import java.util.concurrent.TimeUnit
 
 interface HistoryRepository {
-    @ExperimentalTime
-    fun getHistory(from: ZonedDateTime, to: ZonedDateTime, frequency: DurationUnit)
+    fun getHistory(from: ZonedDateTime, to: ZonedDateTime, frequency: TimeUnit): List<CandleEntity>
 }
