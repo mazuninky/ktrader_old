@@ -1,4 +1,4 @@
-rootProject.name = "trading-bot"
+rootProject.name = "ktrader"
 
 include(
     ":core",
