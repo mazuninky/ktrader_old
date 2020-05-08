@@ -9,12 +9,4 @@ abstract class TradingStrategy {
     fun handle(candle: CandleEntity) {
 
     }
-
-    fun buy() {
-
-    }
-
-    fun sell() {
-
-    }
 }

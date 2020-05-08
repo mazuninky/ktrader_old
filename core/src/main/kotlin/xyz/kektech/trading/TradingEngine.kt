@@ -9,7 +9,7 @@ import xyz.kektech.trading.strategy.TradingStrategy
 import kotlin.coroutines.CoroutineContext
 
 class TradingEngine(
-    strategies: List<TradingStrategy>,
+    private val strategies: List<TradingStrategy>,
     private val api: ExchangeApi,
     private val history: HistoryRepository
 ) : CoroutineScope {
@@ -17,7 +17,9 @@ class TradingEngine(
         get() = TODO("not implemented")
 
     suspend fun start(wait: Boolean = true): TradingEngine {
-        TODO("not implemented")
+        strategies.forEach {
+
+        }
     }
 
     suspend fun stop() {
