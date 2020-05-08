@@ -1,11 +1,13 @@
 package xyz.kektech.trading
 
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import xyz.kektech.trading.api.ExchangeApi
 import xyz.kektech.trading.api.ExchangeApiFactory
 import xyz.kektech.trading.history.HistoryRepository
 import xyz.kektech.trading.history.HistoryRepositoryFactory
 import xyz.kektech.trading.strategy.TradingStrategy
+import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
 class TradingEngine(
@@ -14,16 +16,28 @@ class TradingEngine(
     private val history: HistoryRepository
 ) : CoroutineScope {
     override val coroutineContext: CoroutineContext
-        get() = TODO("not implemented")
+        get() = Dispatchers.Default
 
-    suspend fun start(wait: Boolean = true): TradingEngine {
-        strategies.forEach {
+    private val strategyJobs = mutableListOf<Job>()
 
+    suspend fun start(wait: Boolean = true): TradingEngine = apply {
+        strategies.forEach { strategy ->
+            strategyJobs += CoroutineScope(coroutineContext).launch {
+                val duration = TimeUnit.MINUTES
+                val candleFlow = api.getInstrumentCandleFlow("YANDEX", duration)
+                while (isActive) {
+                    candleFlow.collect { candle ->
+                        strategy.handle(candle)
+                    }
+                }
+            }
         }
     }
 
     suspend fun stop() {
-        TODO("not implemented")
+        strategyJobs.forEach { strategy ->
+            strategy.cancel()
+        }
     }
 }
 
