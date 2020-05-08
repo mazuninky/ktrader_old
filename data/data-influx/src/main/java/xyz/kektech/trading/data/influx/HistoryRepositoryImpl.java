@@ -60,10 +60,9 @@ public class HistoryRepositoryImpl {
         */
         return new ArrayList<>();
     }
-
+/*
     private static class ValueMapper {
         // TODO : fix data
-        /*
         private static CandleEntity mapEntity(QueryResult.Series result, int counter) {
             return new CandleEntity(Double.parseDouble(result.getTags().get(counter)),
                                     Double.parseDouble(result.getTags().get(counter)),
@@ -79,6 +78,6 @@ public class HistoryRepositoryImpl {
         private static long zonedToLong(ZonedDateTime time) {
             return time.toInstant().toEpochMilli();
         }
-        */
     }
+ */
 }
